@@ -34,6 +34,26 @@ The performance of the algorithms is evaluated based on their Win, Draw, and Los
 
 ---
 
+## Planning and Learning using Tabular Methods
+
+### Dyna-Q
+
+Dyna-Q combines direct reinforcement learning with model-based planning.
+
+The agent learns from real interactions with the Tic-Tac-Toe environment and stores the observed transitions in a model. It then uses simulated experiences from the model to perform additional planning updates.
+
+The Dyna-Q agent was trained for 50,000 episodes and evaluated using 100 test games.
+
+### Dyna-Q Results
+
+| Algorithm | Win % | Draw % | Loss % |
+|---|---:|---:|---:|
+| Dyna-Q | 62.00% | 3.00% | 35.00% |
+
+### Dyna-Q Discussion
+
+Dyna-Q achieved a win rate of 62.00% in the conducted experiment. The result demonstrates the application of both learning from real experience and planning from a learned environment model using tabular methods.
+
 ## Project Structure
 
 ```text
