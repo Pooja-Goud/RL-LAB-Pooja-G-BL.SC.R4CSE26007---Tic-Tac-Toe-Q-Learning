@@ -8,39 +8,28 @@ EPISODES = 50000
 
 
 def train_q_learning():
-
     agent_x = QLearningAgent()
     agent_o = QLearningAgent()
 
     game = TicTacToe()
 
     for episode in range(EPISODES):
-
         game.reset()
         done = False
 
         while not done:
-
             current_player = game.current_player
-
             agent = agent_x if current_player == "X" else agent_o
 
             state = game.get_state()
-            available_actions = game.available_actions()
+            actions = game.available_actions()
 
-            action = agent.choose_action(
-                state,
-                available_actions
-            )
+            action = agent.choose_action(state, actions)
 
             game.make_move(action)
-
             result = game.check_winner()
 
             if result is not None:
-
-                done = True
-
                 if result == "Draw":
                     reward = 0
                 elif result == current_player:
@@ -57,19 +46,17 @@ def train_q_learning():
                     True
                 )
 
+                done = True
+
             else:
-
                 game.switch_player()
-
-                next_state = game.get_state()
-                next_actions = game.available_actions()
 
                 agent.update(
                     state,
                     action,
                     0,
-                    next_state,
-                    next_actions,
+                    game.get_state(),
+                    game.available_actions(),
                     False
                 )
 
@@ -80,48 +67,33 @@ def train_q_learning():
 
 
 def train_sarsa():
-
     agent_x = SARSAAgent()
     agent_o = SARSAAgent()
 
     game = TicTacToe()
 
     for episode in range(EPISODES):
-
         game.reset()
         done = False
 
         state = game.get_state()
+        actions = game.available_actions()
 
-        agent = agent_x
+        current_agent = agent_x
 
-        action = agent.choose_action(
-            state,
-            game.available_actions()
-        )
+        action = current_agent.choose_action(state, actions)
 
         while not done:
-
             current_player = game.current_player
 
-            agent = agent_x if current_player == "X" else agent_o
-
-            state = game.get_state()
-
-            available_actions = game.available_actions()
-
-            action = agent.choose_action(
-                state,
-                available_actions
+            current_agent = (
+                agent_x if current_player == "X" else agent_o
             )
 
             game.make_move(action)
-
             result = game.check_winner()
 
             if result is not None:
-
-                done = True
 
                 if result == "Draw":
                     reward = 0
@@ -130,7 +102,7 @@ def train_sarsa():
                 else:
                     reward = -1
 
-                agent.update(
+                current_agent.update(
                     state,
                     action,
                     reward,
@@ -139,8 +111,9 @@ def train_sarsa():
                     True
                 )
 
-            else:
+                done = True
 
+            else:
                 game.switch_player()
 
                 next_state = game.get_state()
@@ -157,7 +130,7 @@ def train_sarsa():
                     next_actions
                 )
 
-                agent.update(
+                current_agent.update(
                     state,
                     action,
                     0,
@@ -166,6 +139,9 @@ def train_sarsa():
                     False
                 )
 
+                state = next_state
+                action = next_action
+
         agent_x.decay_epsilon()
         agent_o.decay_epsilon()
 
@@ -173,43 +149,34 @@ def train_sarsa():
 
 
 def train_expected_sarsa():
-
     agent_x = ExpectedSARSAAgent()
     agent_o = ExpectedSARSAAgent()
 
     game = TicTacToe()
 
     for episode in range(EPISODES):
-
         game.reset()
         done = False
 
         while not done:
-
             current_player = game.current_player
 
-            agent = (
-                agent_x
-                if current_player == "X"
-                else agent_o
+            current_agent = (
+                agent_x if current_player == "X" else agent_o
             )
 
             state = game.get_state()
+            actions = game.available_actions()
 
-            available_actions = game.available_actions()
-
-            action = agent.choose_action(
+            action = current_agent.choose_action(
                 state,
-                available_actions
+                actions
             )
 
             game.make_move(action)
-
             result = game.check_winner()
 
             if result is not None:
-
-                done = True
 
                 if result == "Draw":
                     reward = 0
@@ -218,7 +185,7 @@ def train_expected_sarsa():
                 else:
                     reward = -1
 
-                agent.update(
+                current_agent.update(
                     state,
                     action,
                     reward,
@@ -227,14 +194,15 @@ def train_expected_sarsa():
                     True
                 )
 
-            else:
+                done = True
 
+            else:
                 game.switch_player()
 
                 next_state = game.get_state()
                 next_actions = game.available_actions()
 
-                agent.update(
+                current_agent.update(
                     state,
                     action,
                     0,
