@@ -1,1 +1,2 @@
 requirements.txt
+# No external dependencies required
