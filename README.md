@@ -1,39 +1,20 @@
-# Tic-Tac-Toe Reinforcement Learning: Q-Learning, SARSA and Expected SARSA
+## Performance Comparison
 
-## Project Overview
+Each algorithm was trained for 50,000 episodes and evaluated using 100 test games.
 
-This project implements a Tic-Tac-Toe game using Reinforcement Learning.
+### Q-Learning, SARSA and Expected SARSA
 
-Three Temporal-Difference reinforcement learning algorithms are implemented and compared:
+| Algorithm | Win % | Draw % | Loss % |
+|---|---:|---:|---:|
+| Q-Learning | 66.00% | 1.00% | 33.00% |
+| SARSA | 71.00% | 5.00% | 24.00% |
+| Expected SARSA | 69.00% | 3.00% | 28.00% |
 
-- Q-Learning
-- SARSA
-- Expected SARSA
+### n-step Methods
 
-The objective is to train intelligent agents through repeated interactions with the Tic-Tac-Toe environment and compare their performance.
+The n-step experiments used a 3-step return.
 
-## Technologies Used
-
-- Python
-- Reinforcement Learning
-- Q-Learning
-- SARSA
-- Expected SARSA
-- GitHub
-- Google Colab
-
-## Project Structure
-
-```text
-Tic-Tac-Toe-Q-Learning/
-│
-├── tic_tac_toe.py
-├── q_learning.py
-├── sarsa.py
-├── expected_sarsa.py
-├── train.py
-├── train_comparison.py
-├── evaluate.py
-├── evaluate_comparison.py
-├── README.md
-└── requirements.txt
+| Algorithm | Win % | Draw % | Loss % |
+|---|---:|---:|---:|
+| 3-step SARSA | 55.00% | 16.00% | 29.00% |
+| 3-step Off-Policy | 56.00% | 16.00% | 28.00% |
